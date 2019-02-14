@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content='width=device-width, initialscale=1.0, maximum-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>configure</title>
+</head>
+
+<body>
+
+    <form class="payment-form" method="POST" action="server/authorisation.php">
+
+        <input name="cko-card-token" id="input-id" value="" hidden />
+
+        <script>
+            window.CKOConfig = {
+                publicKey: 'pk_test_6e40a700-d563-43cd-89d0-f9bb17d35e73',
+                customerEmail: 'testme@email.com',
+                value: 10000,
+                currency: 'USD',
+                cardFormMode: 'cardTokenisation',
+                paymentMode: 'cards',
+                debugMode: true,
+                cardTokenised: function (event) {
+                    console.log(event.data.cardToken);
+                    document.querySelector("#input-id").value = event.data.cardToken;
+                    document.querySelector('.payment-form').submit();
+                }
+            };
+        </script>
+        <script async src="https://cdn.checkout.com/sandbox/js/checkout.js"></script>
+    </form>
+
+</body>
+
+</html>

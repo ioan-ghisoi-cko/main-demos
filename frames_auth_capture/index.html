@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./assets/style.css">
+    <title>Demo</title>
+</head>
+
+<body>
+
+    <div class="outer">
+        <div class="inner">
+            <div class="product">
+                <img src="./assets/product.png" alt="no product image" class="img">
+                <h2>Flight - $100</h2>
+            </div>
+            <div class="ckoframes">
+
+                <!-- CHECKOUT FRAMES -->
+
+                <script src="https://cdn.checkout.com/js/frames.js"></script>
+                <form id="payment-form" method="POST" action="server/authorisation.php">
+                    <div class="frames-container">
+                        <!-- form will be added here -->
+                    </div>
+                    <button id="pay-now-button" type="submit" disabled>PAY NOW</button>
+                </form>
+
+                <script>
+                    var paymentForm = document.getElementById('payment-form');
+                    var payNowButton = document.getElementById('pay-now-button');
+
+                    Frames.init({
+                        publicKey: 'pk_test_6e40a700-d563-43cd-89d0-f9bb17d35e73',
+                        containerSelector: '.frames-container',
+                        customerName: 'card holder',
+                        cardValidationChanged: function () {
+                            payNowButton.disabled = !Frames.isCardValid();
+                        },
+                        cardSubmitted: function () {
+                            payNowButton.disabled = true;
+                        },
+                        cardTokenised: function (event) {
+                            var cardToken = event.data.cardToken;
+                            Frames.addCardToken(paymentForm, cardToken)
+                            paymentForm.submit()
+                        },
+                    });
+                    paymentForm.addEventListener('submit', function (event) {
+                        event.preventDefault();
+                        Frames.submitCard();
+                    });
+                </script>
+
+                <!-- CHECKOUT FRAMES -->
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
